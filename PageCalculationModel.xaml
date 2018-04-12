@@ -1,0 +1,559 @@
+﻿<Page x:Class="WpfActiveDefenceSystem.PageCalculationModel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfActiveDefenceSystem"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1200"
+      Title="PageCalculationModel" Background="#6632505A">
+    <Page.Resources>
+
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="RadioButton.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="RadioButton.Static.Border" Color="#FF707070"/>
+        <Style x:Key="OptionMarkFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="14,0,0,0" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Background" Color="#FFF3F9FF"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="RadioButton.MouseOver.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Border" Color="#FFBCBCBC"/>
+        <SolidColorBrush x:Key="RadioButton.Disabled.Glyph" Color="#FF707070"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Background" Color="#FFD9ECFF"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="RadioButton.Pressed.Glyph" Color="#FF212121"/>
+        <Style x:Key="RadioButtonStyleInitialState" TargetType="{x:Type RadioButton}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource RadioButton.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource RadioButton.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RadioButton}">
+                        <Grid x:Name="templateRoot" Background="{x:Null}" SnapsToDevicePixels="True" Margin="0,0,-153.5,0" Width="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="radioButtonBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="100" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="1,1,2,1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="30" Height="30">
+                                <Grid x:Name="markGrid" Margin="0" Height="33.667" Width="33.667" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Ellipse x:Name="optionMark" MinWidth="6" MinHeight="6" Opacity="0" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Height="12" Width="12" Fill="Black"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" Margin="11,5.125,-23.333,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Height="Auto" Width="Auto" VerticalAlignment="Top"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="radioButtonBorder" Value="{StaticResource RadioButton.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource RadioButton.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0.56"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FF5593FF"/>
+        <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#FFE6E6E6"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#FFBCBCBC"/>
+        <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#FF707070"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FFD9ECFF"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FF3C77DD"/>
+        <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FF212121"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121"/>
+        <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid x:Name="templateRoot" Background="Transparent" SnapsToDevicePixels="True" Height="34.773" Width="178.506">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="checkBoxBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="9.001,3.01,0,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Height="23.098" Width="24.644" Grid.Column="1">
+                                <Grid x:Name="markGrid">
+                                    <Path x:Name="optionMark" Data="F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z " Fill="{StaticResource OptionMark.Static.Glyph}" Margin="0,10,-20.5,-8" Opacity="0" Stretch="None" HorizontalAlignment="Right" Width="20.644" d:IsHidden="True"/>
+                                    <Rectangle x:Name="indeterminateMark" Fill="{StaticResource OptionMark.Static.Glyph}" Margin="2" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="contentPresenter" Grid.Column="1" Focusable="False" HorizontalAlignment="Stretch" Margin="42.476,0,-130.168,0" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" Width="Auto" Height="34.773"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasContent" Value="true">
+                                <Setter Property="FocusVisualStyle" Value="{StaticResource OptionMarkFocusVisual}"/>
+                                <Setter Property="Padding" Value="4,-1,0,0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="true">
+                                <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
+                                <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                                <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="{x:Null}">
+                                <Setter Property="Opacity" TargetName="optionMark" Value="0"/>
+                                <Setter Property="Opacity" TargetName="indeterminateMark" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="GlassButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Rectangle x:Name="Base" RadiusY="10" RadiusX="10" StrokeThickness="0" Opacity="1" Fill="#FF0B2947">
+                                <Rectangle.Stroke>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#66FFFFFF" Offset="0.251"/>
+                                        <GradientStop Color="#45FFFFFF" Offset="0.787"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Stroke>
+                            </Rectangle>
+                            <Rectangle x:Name="Frame" RadiusY="10" RadiusX="10" StrokeThickness="8" Opacity="1">
+                                <Rectangle.Stroke>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#05FFFFFF" Offset="0.243"/>
+                                        <GradientStop Color="#38FFFFFF" Offset="0.787"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Stroke>
+                                <Rectangle.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#8C4F80EA" Offset="0"/>
+                                        <GradientStop Color="#54FFFFFF" Offset="1"/>
+                                        <GradientStop Color="#07FBFBFB"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle x:Name="Glow" RadiusY="10" RadiusX="10" StrokeThickness="0" d:IsHidden="True">
+                                <Rectangle.Stroke>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#66FFFFFF" Offset="0.251"/>
+                                        <GradientStop Color="#45FFFFFF" Offset="0.787"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Stroke>
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                        <GradientStop Color="#19407BF9" Offset="0"/>
+                                        <GradientStop Color="#FF285AC7" Offset="1"/>
+                                        <GradientStop Color="#4FA4AEC3" Offset="0.28"/>
+                                        <GradientStop Color="#8F7E99D2" Offset="0.544"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Rectangle x:Name="Glass" RadiusY="10" RadiusX="10" StrokeThickness="0" d:IsHidden="True">
+                                <Rectangle.Stroke>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#66FFFFFF" Offset="0.251"/>
+                                        <GradientStop Color="#45FFFFFF" Offset="0.787"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Stroke>
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                        <GradientStop Color="#66FFFFFF" Offset="0"/>
+                                        <GradientStop Color="#66FFFFFF" Offset="1"/>
+                                        <GradientStop Color="#66B4C6D6" Offset="0.502"/>
+                                        <GradientStop Color="#0C5192EA" Offset="0.247"/>
+                                        <GradientStop Color="#0C3082C1" Offset="0.678"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <ContentPresenter x:Name="ContentSite"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Stretch" Margin="10,12,10,12.032" Width="Auto" Height="Auto" RenderTransformOrigin="0.5,0.5" d:LayoutOverrides="VerticalAlignment" >
+                                <ContentPresenter.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleY="1" ScaleX="1"/>
+                                        <SkewTransform AngleY="0" AngleX="0"/>
+                                        <RotateTransform Angle="0"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Opacity" TargetName="Glow" Value="0"/>
+                                <Setter Property="Opacity" TargetName="Glass" Value="0"/>
+                                <Setter Property="Opacity" TargetName="Base" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" TargetName="Glass" Value="1"/>
+                                <Setter Property="Opacity" TargetName="Glow" Value="0.01"/>
+                                <Setter Property="Opacity" TargetName="Base" Value="0.01"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Opacity" TargetName="Glow" Value="1"/>
+                                <Setter Property="Opacity" TargetName="Base" Value="0"/>
+                                <Setter Property="Opacity" TargetName="Glass" Value="0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid x:Name="Grid_GyroError" Margin="0,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="245.833"/>
+            </Grid.RowDefinitions>
+
+            <Rectangle x:Name="Rectangle_GyroError" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_GyroError" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="  陀螺仪漂移误差模拟：" Margin="0" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,4.4,0,-1" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <CheckBox x:Name="checkBox_RandomConstant" Content="随机常数εb (rad/s)" HorizontalAlignment="Left" Margin="40,55,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}"/>
+            <TextBox x:Name="textBox_RandomConstant" Height="30" Margin="0,54,72,0" TextWrapping="Wrap" Text="0.1" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_RandomConstantUnit" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°/h" Margin="0,49.066,10,0" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox_1orderMarkov" Content="一阶马尔科夫εr (rad/s)" HorizontalAlignment="Left" Margin="40,95,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" d:LayoutOverrides="Height" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_1orderMarkov" Margin="0,94,72,121.863" TextWrapping="Wrap" Text="7200" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="Tr :" Margin="0,89.066,192,116.766" HorizontalAlignment="Right" Width="42.994" Grid.Row="1"/>
+            <Label x:Name="label_1orderMarkovUnit" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="s" Margin="0,89.066,10,116.766" HorizontalAlignment="Right" Width="61.994" Grid.Row="1"/>
+            <TextBox x:Name="textBox_1orderMarkov_MeanSquareRoot" Margin="0,0,72,81.766" TextWrapping="Wrap" Text="0.1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width" Height="30" VerticalAlignment="Bottom"/>
+            <Label x:Name="label_1orderMarkov_MeanSquareRoot" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="δr:（均方根）:" Margin="250.006,0,192,76.669" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <Label x:Name="label_1orderMarkovUnit_MeanSquareRoot" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°/h" Margin="0,0,10.006,76.669" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <CheckBox x:Name="checkBox_whiteNoise" Content="白噪声Wg (rad/s)" HorizontalAlignment="Left" Margin="40,175,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_whiteNoise" Margin="0,0,72,40.833" TextWrapping="Wrap" Text="0.001" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_whiteNoise" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="σ g :" Margin="0,0,192,35.736" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="55.994"/>
+            <Label x:Name="label_whiteNoiseUnit" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°/h" Margin="0,0,10.006,35.736" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid x:Name="Grid_AcceleratorError" Grid.Column="1" Margin="5,0,0,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Rectangle_AcceleratorError" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_AcceleratorError" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="  加速度计误差模拟：" Margin="0,0,0,1.6" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,3.4,0,0" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <CheckBox x:Name="checkBox_1orderMarkov_Acc" Content="一阶马尔科夫εr (m/s^2)" HorizontalAlignment="Left" Margin="40,95,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_1orderMarkov_Acc" Margin="0,94,97,121.862" TextWrapping="Wrap" Text="1800 " VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_Acc" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="Tr :" Margin="0,89.066,217,116.765" HorizontalAlignment="Right" Width="42.994" Grid.Row="1"/>
+            <Label x:Name="label_1orderMarkovUnit_Acc" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="s" Margin="0,89.066,35,116.765" HorizontalAlignment="Right" Width="61.994" Grid.Row="1"/>
+            <TextBox x:Name="textBox_1orderMarkov_MeanSquareRoot_Acc" Margin="0,0,97,81.765" TextWrapping="Wrap" Text="0.001" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_MeanSquareRoot_Acc" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="σ r:（均方根）:" Margin="219.006,0,217,76.668" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <Label x:Name="label_1orderMarkovUnit_MeanSquareRoot_Acc" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="m/s^2" Margin="0,0,10,76.668" HorizontalAlignment="Right" Width="87" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid x:Name="Grid_AttackAngleSensorError" Grid.Row="1" Margin="0,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Rectangle_AttackAngleSensorError" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_AttackAngleSensorError" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="  迎角风标传感器误差模拟：" Margin="0,0,0,1.6" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,3.4,0,0" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <CheckBox x:Name="checkBox_RandomConstant_AttackAngle" Content="随机常数εb (rad)" HorizontalAlignment="Left" Margin="40,55,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}"/>
+            <TextBox x:Name="textBox_RandomConstant_AttackAngle" Height="30" Margin="0,54,72,0" TextWrapping="Wrap" Text="0.1" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_RandomConstantUnit_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,49.066,10,0" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox_1orderMarkov_AttackAngle" Content="一阶马尔科夫εr (rad)" HorizontalAlignment="Left" Margin="40,95,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_1orderMarkov_AttackAngle" Margin="0,94,72,121.863" TextWrapping="Wrap" Text="7200" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="Tr :" Margin="0,89.066,192,116.766" HorizontalAlignment="Right" Width="42.994" Grid.Row="1"/>
+            <Label x:Name="label_1orderMarkovUnit_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="s" Margin="0,89.066,10,116.766" HorizontalAlignment="Right" Width="61.994" Grid.Row="1"/>
+            <TextBox x:Name="textBox_1orderMarkov_MeanSquareRoot_AttackAngle" Margin="0,0,72,81.766" TextWrapping="Wrap" Text="0.1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_MeanSquareRoot_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="δr:（均方根）:" Margin="250.006,0,192,76.669" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <Label x:Name="label_1orderMarkovUnit_MeanSquareRoot_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,0,10.006,76.669" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <CheckBox x:Name="checkBox_whiteNoise_AttackAngle" Content="白噪声Wg (rad)" HorizontalAlignment="Left" Margin="40,175,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_whiteNoise_AttackAngle" Margin="0,0,72,40.833" TextWrapping="Wrap" Text="0.5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_whiteNoise_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="σ g :" Margin="0,0,192,35.736" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="55.994"/>
+            <Label x:Name="label_whiteNoiseUnit_AttackAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,0,10.006,35.736" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid x:Name="Grid_SlideAngleSensorError" Grid.Column="1" Grid.Row="1" Margin="5,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Rectangle_SlideAngleSensorError" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_SlideAngleSensorError" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="  侧滑角风标传感器误差模拟：" Margin="0,0,0,1.6" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,3.4,0,0" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <CheckBox x:Name="checkBox_RandomConstant_SlideAngle" Content="随机常数εb (rad)" HorizontalAlignment="Left" Margin="40,54.166,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}"/>
+            <TextBox x:Name="textBox_RandomConstant_SlideAngle" Height="30" Margin="0,53.167,72,0" TextWrapping="Wrap" Text="0.1" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_RandomConstantUnit_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,48.233,10,0" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBox_1orderMarkov_SlideAngle" Content="一阶马尔科夫εr (rad)" HorizontalAlignment="Left" Margin="40,94.166,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_1orderMarkov_SlideAngle" Margin="0,93.167,72,0" TextWrapping="Wrap" Text="7200" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="29.97" VerticalAlignment="Top" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="Tr :" Margin="0,88.233,192,121.766" HorizontalAlignment="Right" Width="42.994" Grid.Row="1"/>
+            <Label x:Name="label_1orderMarkovUnit_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="s" Margin="0,88.233,10,121.766" HorizontalAlignment="Right" Width="61.994" Grid.Row="1"/>
+            <TextBox x:Name="textBox_1orderMarkov_MeanSquareRoot_SlideAngle" Margin="0,0,72,86.766" TextWrapping="Wrap" Text="0.1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_1orderMarkov_MeanSquareRoot_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="δr:（均方根）:" Margin="250.006,0,192,81.669" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <Label x:Name="label_1orderMarkovUnit_MeanSquareRoot_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,0,10.006,81.669" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+            <CheckBox x:Name="checkBox_whiteNoise_SlideAngle" Content="白噪声Wg (rad)" HorizontalAlignment="Left" Margin="40,174.166,0,0" Grid.Row="1" FontSize="22" Padding="6,-9,0,0" Foreground="White" Style="{DynamicResource CheckBoxStyle}" VerticalAlignment="Top"/>
+            <TextBox x:Name="textBox_whiteNoise_SlideAngle" Margin="0,0,72,45.833" TextWrapping="Wrap" Text="0.5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="120" FontSize="22" Grid.Row="1" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+            <Label x:Name="label_whiteNoise_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="σ g :" Margin="0,0,192,40.736" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="55.994"/>
+            <Label x:Name="label_whiteNoiseUnit_SlideAngle" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="°" Margin="0,0,10.006,40.736" HorizontalAlignment="Right" Width="61.994" Grid.Row="1" Height="40.001" VerticalAlignment="Bottom"/>
+        </Grid>
+        <Grid x:Name="Grid_Actuators" Grid.Row="2" Margin="0,0,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Rectangle_Actuators" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_Actuators" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content="  作动器选择：" Margin="0,0,0,1.6" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,3.4,0,0" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <StackPanel Margin="175.54,62.5,182.04,57" Grid.Row="1">
+                <RadioButton x:Name="RadioButton_1order" GroupName="Actuator" IsChecked="True" Foreground="White" Height="40" Style="{DynamicResource RadioButtonStyleInitialState}" Background="White" FontSize="20" Margin="30,0,100,0" VerticalAlignment="Center" Content="一阶惯性环节"/>
+                <RadioButton x:Name="RadioButton_2order" GroupName="Actuator" Content="二阶振荡环节" Margin="30,0,0,0" HorizontalAlignment="Left" Width="40" Foreground="White" Style="{DynamicResource RadioButtonStyleInitialState}" VerticalAlignment="Center" FontSize="20" Height="40" />
+                <RadioButton x:Name="RadioButton_Real" GroupName="Actuator" Content="真实舵机" Margin="30,0,0,0" HorizontalAlignment="Left" Width="40" Foreground="White" Style="{DynamicResource RadioButtonStyleInitialState}" VerticalAlignment="Center" FontSize="20" Padding="4,0,0,0" Height="40"  />
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="Grid_WindModel" Grid.Row="2" Grid.Column="1" Margin="5,0,0,5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="Rectangle_WindModel" Grid.Row="0" d:LayoutOverrides="LeftMargin, RightMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.69,4.81" StartPoint="2.317,-9.601">
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                        <GradientStop Color="#FF648FA0" Offset="0.828"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Label x:Name="label_WindModel" FontFamily="Microsoft YaHei" FontSize="22" Foreground="White" Content=" 风扰动模型（MIL-F-8785C美军标）：" Margin="0,0,0,1.6" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" VerticalContentAlignment="Center"/>
+            <Rectangle RadiusY="20" RadiusX="20" StrokeThickness="10" Margin="0,3.4,0,0" Grid.Row="1" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="-0.215,0.936" StartPoint="1.57,-0.116">
+                        <GradientStop Color="#BF4A83BB" Offset="0.277"/>
+                        <GradientStop Color="#C481B1D3" Offset="0.987"/>
+                        <GradientStop Color="#B262A7EA" Offset="0.004"/>
+                        <GradientStop Color="#CE6EB4E4" Offset="0.481"/>
+                        <GradientStop Color="#BF88BFDE" Offset="0.711"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <RadialGradientBrush RadiusX="0.528">
+                        <GradientStop Color="#FF6490A0" Offset="0.866"/>
+                        <GradientStop Color="#FF275464" Offset="1"/>
+                    </RadialGradientBrush>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <ToggleButton x:Name="tbuttonWindModel1" Content="离散阵风模型" Margin="55,60,0,0" Style="{DynamicResource GlassButtonStyle}" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="45.532" VerticalAlignment="Top" Grid.Row="1" Width="212" d:LayoutOverrides="HorizontalAlignment"/>
+            <ToggleButton x:Name="tbuttonWindModel2" Content="风切边模型" Margin="0,60,55,0" Style="{DynamicResource GlassButtonStyle}" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="45.532" VerticalAlignment="Top" Grid.Row="1" Width="212" d:LayoutOverrides="HorizontalAlignment"/>
+            <ToggleButton x:Name="tbuttonWindModel3" Content="Dryden风模型" Margin="55,0,0,67.234" Style="{DynamicResource GlassButtonStyle}" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="45.532" VerticalAlignment="Bottom" Grid.Row="1" d:LayoutOverrides="HorizontalAlignment" Width="212"/>
+            <ToggleButton x:Name="tbuttonWindModel4" Content="VonKarman风模型" Margin="0,0,55,67.234" Style="{DynamicResource GlassButtonStyle}" FontSize="16" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Right" Height="45.532" VerticalAlignment="Bottom" Grid.Row="1" d:LayoutOverrides="HorizontalAlignment" Width="212"/>
+        </Grid>
+
+    </Grid>
+</Page>
